@@ -30,4 +30,27 @@ class Enigma
 
     keys
   end
+
+  def parse_shifts(date)
+    # Make it a number
+    tmp_number = date.strftime('%d%m%y').to_i
+
+    # Square it
+    tmp_number = tmp_number ** 2
+
+    # String it
+    tmp_string = tmp_number.to_s
+
+    # Get last 4 digits
+    full_offset = tmp_string[-4..-1]
+
+    # Make da hash
+    shifts_keys = [:a, :b, :c, :d]
+    shifts = {}
+    shifts_keys.each_with_index do |key, i|
+      shifts[key] = full_offset[i].to_i
+    end
+
+    shifts
+  end
 end

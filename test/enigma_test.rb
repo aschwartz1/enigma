@@ -54,7 +54,14 @@ class EnigmaTest < Minitest::Test
   end
 
   def test_parse_shifts
-    skip
+    expected = {
+      a: 1,
+      b: 0,
+      c: 2,
+      d: 5
+    }
+
+    assert_equal expected, @enigma.parse_shifts(Date.new(1995, 8, 4))
   end
 
   def test_can_create_shifts
