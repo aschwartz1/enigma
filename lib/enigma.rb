@@ -5,8 +5,6 @@ class Enigma
     # Need to generate a key?
     # Need to generate a date?
 
-    # Calculate offset
-
     # Calculate shifts
 
     # Encrypt the message
@@ -18,7 +16,14 @@ class Enigma
     return nil unless key.length == 5
 
     keys = parse_keys(key)
-    offsets = offsets_from_date(date)
+    offsets = parse_offsets(date)
+
+    shifts = {}
+    SHIFT_KEYS.each do |key|
+      shifts[key] = keys[key] + offsets[key]
+    end
+
+    shifts
   end
 
   def parse_keys(input_key)

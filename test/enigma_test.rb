@@ -66,7 +66,6 @@ class EnigmaTest < Minitest::Test
   end
 
   def test_can_create_shifts
-    skip
     expected = {
       a: 3,
       b: 27,
