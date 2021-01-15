@@ -31,9 +31,7 @@ class Enigma
   end
 
   def parse_offsets(date)
-    date_as_number = date.strftime('%d%m%y').to_i
-    squared_date_string = (date_as_number ** 2).to_s
-    raw_offset = squared_date_string[-4..-1]
+    raw_offset = calculate_raw_offset(date)
 
     offsets = {}
     SHIFT_KEYS.each_with_index do |key, i|
@@ -41,5 +39,14 @@ class Enigma
     end
 
     offsets
+  end
+
+  private
+
+  def calculate_raw_offset(date)
+    date_as_number = date.strftime('%d%m%y').to_i
+    squared_date_string = (date_as_number ** 2).to_s
+
+    squared_date_string[-4..-1]
   end
 end
