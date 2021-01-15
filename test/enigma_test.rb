@@ -28,19 +28,20 @@ class EnigmaTest < Minitest::Test
     skip
   end
 
-  def test_ecryption_ignores_chars
-    skip
-    key = '02715'
-    date = Date.new(1995, 8, 4)
+  # TODO: once everything's done, I think
+  # def test_ecryption_ignores_chars
+  #   skip
+  #   key = '02715'
+  #   date = Date.new(1995, 8, 4)
 
-    expected = {
-      encryption: 'keder ohulw!',
-      key: key,
-      date: '04081995'
-    }
+  #   expected = {
+  #     encryption: 'keder ohulw!',
+  #     key: key,
+  #     date: '04081995'
+  #   }
 
-    assert_equal expected, @enigma.encrypt('HELLO world!', key, date)
-  end
+  #   assert_equal expected, @enigma.encrypt('HELLO world!', key, date)
+  # end
 
   def test_parse_keys
     expected = {
@@ -53,7 +54,7 @@ class EnigmaTest < Minitest::Test
     assert_equal expected, @enigma.parse_keys('02715')
   end
 
-  def test_parse_shifts
+  def test_parse_offsets
     expected = {
       a: 1,
       b: 0,
@@ -61,7 +62,7 @@ class EnigmaTest < Minitest::Test
       d: 5
     }
 
-    assert_equal expected, @enigma.parse_shifts(Date.new(1995, 8, 4))
+    assert_equal expected, @enigma.parse_offsets(Date.new(1995, 8, 4))
   end
 
   def test_can_create_shifts
@@ -75,6 +76,6 @@ class EnigmaTest < Minitest::Test
     key = '02715'
     date = Date.new(1995, 8, 4)
 
-    assert_equal expected, @enigma.find_shifts(key, date)
+    assert_equal expected, @enigma.create_shifts(key, date)
   end
 end
