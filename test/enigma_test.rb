@@ -24,9 +24,9 @@ class EnigmaTest < Minitest::Test
     assert_equal expected, @enigma.encrypt('hello world', key, date)
   end
 
-  def test_can_encrypt_without_optional_args
-    skip
-  end
+  # TODO: once encryption w/ args works
+  # def test_can_encrypt_without_optional_args
+  # end
 
   # TODO: once everything's done, I think
   # def test_ecryption_ignores_chars
@@ -72,9 +72,7 @@ class EnigmaTest < Minitest::Test
       c: 73,
       d: 20
     }
-    key = '02715'
-    date = Date.new(1995, 8, 4)
 
-    assert_equal expected, @enigma.create_shifts(key, date)
+    assert_equal expected, @enigma.create_shifts('02715', Date.new(1995, 8, 4))
   end
 end
