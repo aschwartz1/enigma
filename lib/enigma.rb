@@ -6,6 +6,7 @@ class Enigma
     # Need to generate a date?
 
     # Calculate shifts
+    create_shifts(key, date)
 
     # Encrypt the message
 
@@ -47,6 +48,10 @@ class Enigma
   end
 
   private
+
+  def character_set
+    @_character_set ||= (('a'..'z').to_a << ' ')
+  end
 
   def calculate_raw_offset(date)
     date_as_number = date.strftime('%d%m%y').to_i
