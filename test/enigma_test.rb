@@ -49,11 +49,11 @@ class EnigmaTest < Minitest::Test
       d: 20
     }
 
-    result = @enigma.mapping_table(shift_rules)
+    result = @enigma.calculate_encodings(shift_rules)
 
-    assert_equal [4, 1, 20, 21], result['b']
-    assert_equal [14, 11, 3, 4], result['l']
-    assert_equal [0, 24, 16, 17], result['y']
+    assert_equal ['e', 'b', 'u', 'v'], result['b']
+    assert_equal ['o', 'l', 'd', 'e'], result['l']
+    assert_equal ['a', 'y', 'q', 'r'], result['y']
   end
 
   def test_actual_encryption

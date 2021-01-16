@@ -15,16 +15,23 @@ class Enigma
   end
 
   def do_encrypt(message, shift_rules)
+    encodings = calculate_encodings(shift_rules)
 
+    encrypted_message = ''
+    current_shift = 0
+    message.chars.each do |char|
+      encrypted_message << encodings[char][which_shift]
+      current_shift = next_shift(current_shift)
+    end
   end
 
-  def mapping_table(shift_rules)
-    mapping_table = {}
+  def calculate_encodings(shift_rules)
+    encodings = {}
     character_set.each_with_index do |char, index|
-      mapping_table[char] = new_indexes_for(index, shift_rules)
+      encodings[char] = encodings_for(index, shift_rules)
     end
 
-    mapping_table
+    encodings
   end
 
   def create_shifts(key, date)
@@ -74,17 +81,27 @@ class Enigma
     squared_date_string[-4..-1]
   end
 
-  def new_indexes_for(orig_index, shift_rules)
-    positions = []
+  def encodings_for(orig_index, shift_rules)
+    encodings = []
     shift_rules.keys.sort.each do |shift|
-      positions << shift_formula(orig_index, shift_rules[shift])
+      encodings << encoding_for(orig_index, shift_rules[shift])
     end
 
-    positions
+    encodings
   end
 
-  def shift_formula(orig_index, shift)
+  def encoding_for(orig_index, shift)
     num_characters = character_set.length
-    (orig_index + (shift % num_characters)) % num_characters
+    new_index = (orig_index + (shift % num_characters)) % num_characters
+
+    character_set[new_index]
+  end
+
+  def next_shift(current_shift)
+    if current_shift < 4
+      current_shift + 1
+    else
+      0
+    end
   end
 end
