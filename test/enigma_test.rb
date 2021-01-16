@@ -10,19 +10,17 @@ class EnigmaTest < Minitest::Test
     assert_instance_of Enigma, @enigma
   end
 
-  def test_can_encrypt_with_all_args
-    skip
-    key = '02715'
-    date = Date.new(1995, 8, 4)
+  # TODO: once actual encrypt method works
+  # def test_can_encrypt_with_all_args
+  #   skip
+  #   expected = {
+  #     encryption: 'keder ohulw',
+  #     key: key,
+  #     date: '04081995'
+  #   }
 
-    expected = {
-      encryption: 'keder ohulw',
-      key: key,
-      date: '04081995'
-    }
-
-    assert_equal expected, @enigma.encrypt('hello world', key, date)
-  end
+  #   assert_equal expected, @enigma.encrypt('hello world', '02715', Date.new(1995, 8, 4))
+  # end
 
   # TODO: once encryption w/ args works
   # def test_can_encrypt_without_optional_args
@@ -42,6 +40,33 @@ class EnigmaTest < Minitest::Test
 
   #   assert_equal expected, @enigma.encrypt('HELLO world!', key, date)
   # end
+
+  def test_create_mapping_table
+    shift_rules = {
+      a: 3,
+      b: 27,
+      c: 73,
+      d: 20
+    }
+
+    result = @enigma.mapping_table(shift_rules)
+
+    assert_equal [4, 1, 20, 21], result['b']
+    assert_equal [14, 11, 3, 4], result['l']
+    assert_equal [0, 24, 16, 17], result['y']
+  end
+
+  def test_actual_encryption
+    skip
+    shift_rules = {
+      a: 3,
+      b: 27,
+      c: 73,
+      d: 20
+    }
+
+    assert_equal 'keder ohulw', @enigma.do_encrypt('hello world', shift_rules)
+  end
 
   def test_parse_keys
     expected = {

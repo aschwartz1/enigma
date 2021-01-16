@@ -6,11 +6,25 @@ class Enigma
     # Need to generate a date?
 
     # Calculate shifts
-    create_shifts(key, date)
+    shift_rules = create_shifts(key, date)
 
     # Encrypt the message
+    do_encrypt(message, shift_rules)
 
     # Format / return output hash
+  end
+
+  def do_encrypt(message, shift_rules)
+
+  end
+
+  def mapping_table(shift_rules)
+    mapping_table = {}
+    character_set.each_with_index do |char, index|
+      mapping_table[char] = new_indexes_for(index, shift_rules)
+    end
+
+    mapping_table
   end
 
   def create_shifts(key, date)
@@ -58,5 +72,19 @@ class Enigma
     squared_date_string = (date_as_number ** 2).to_s
 
     squared_date_string[-4..-1]
+  end
+
+  def new_indexes_for(orig_index, shift_rules)
+    positions = []
+    shift_rules.keys.sort.each do |shift|
+      positions << shift_formula(orig_index, shift_rules[shift])
+    end
+
+    positions
+  end
+
+  def shift_formula(orig_index, shift)
+    num_characters = character_set.length
+    (orig_index + (shift % num_characters)) % num_characters
   end
 end
