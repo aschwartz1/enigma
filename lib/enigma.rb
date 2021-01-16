@@ -17,15 +17,11 @@ class Enigma
   def do_encrypt(message, shift_rules)
     encodings = calculate_encodings(shift_rules)
 
-    encrypted_message = ''
-    current_shift = 0
-    message.chars.each do |char|
-      require "pry"; binding.pry if encodings[char][current_shift].nil?
-      encrypted_message << encodings[char][current_shift]
-      current_shift = next_shift(current_shift)
-    end
-
-    encrypted_message
+    shift_index = -1
+    message.chars.map do |char|
+      shift_index = next_after(shift_index)
+      encodings[char][shift_index]
+    end.join('')
   end
 
   def calculate_encodings(shift_rules)
@@ -100,9 +96,9 @@ class Enigma
     character_set[new_index]
   end
 
-  def next_shift(current_shift)
-    if current_shift < 3
-      current_shift + 1
+  def next_after(last_shift)
+    if last_shift < 3
+      last_shift + 1
     else
       0
     end
