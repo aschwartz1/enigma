@@ -6,10 +6,40 @@ class Enigma
     # Need to generate a date?
 
     # Calculate shifts
+    shift_rules = create_shifts(key, date)
 
     # Encrypt the message
+    encrypted = do_encrypt(message, shift_rules)
 
     # Format / return output hash
+    encryption_data(encrypted, key, date_string(date))
+  end
+
+  def encryption_data(encrypted_message, key, date)
+    {
+      encryption: encrypted_message,
+      key: key,
+      date: date
+    }
+  end
+
+  def do_encrypt(message, shift_rules)
+    encodings = calculate_encodings(shift_rules)
+
+    shift_index = -1
+    message.chars.map do |char|
+      shift_index = next_after(shift_index)
+      encodings[char][shift_index]
+    end.join('')
+  end
+
+  def calculate_encodings(shift_rules)
+    encodings = {}
+    character_set.each_with_index do |char, index|
+      encodings[char] = encodings_for(index, shift_rules)
+    end
+
+    encodings
   end
 
   def create_shifts(key, date)
@@ -48,10 +78,42 @@ class Enigma
 
   private
 
+  def character_set
+    @_character_set ||= (('a'..'z').to_a << ' ')
+  end
+
   def calculate_raw_offset(date)
-    date_as_number = date.strftime('%d%m%y').to_i
+    date_as_number = date_string(date).to_i
     squared_date_string = (date_as_number ** 2).to_s
 
     squared_date_string[-4..-1]
+  end
+
+  def date_string(date)
+    date.strftime('%d%m%y')
+  end
+
+  def encodings_for(orig_index, shift_rules)
+    encodings = []
+    shift_rules.keys.sort.each do |shift|
+      encodings << encoding_for(orig_index, shift_rules[shift])
+    end
+
+    encodings
+  end
+
+  def encoding_for(orig_index, shift)
+    num_characters = character_set.length
+    new_index = (orig_index + (shift % num_characters)) % num_characters
+
+    character_set[new_index]
+  end
+
+  def next_after(last_shift)
+    if last_shift < 3
+      last_shift + 1
+    else
+      0
+    end
   end
 end

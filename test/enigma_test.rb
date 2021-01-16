@@ -11,17 +11,13 @@ class EnigmaTest < Minitest::Test
   end
 
   def test_can_encrypt_with_all_args
-    skip
-    key = '02715'
-    date = Date.new(1995, 8, 4)
-
     expected = {
       encryption: 'keder ohulw',
-      key: key,
-      date: '04081995'
+      key: '02715',
+      date: '040895'
     }
 
-    assert_equal expected, @enigma.encrypt('hello world', key, date)
+    assert_equal expected, @enigma.encrypt('hello world', '02715', Date.new(1995, 8, 4))
   end
 
   # TODO: once encryption w/ args works
@@ -42,6 +38,33 @@ class EnigmaTest < Minitest::Test
 
   #   assert_equal expected, @enigma.encrypt('HELLO world!', key, date)
   # end
+
+  def test_create_mapping_table
+    shift_rules = {
+      a: 3,
+      b: 27,
+      c: 73,
+      d: 20
+    }
+
+    result = @enigma.calculate_encodings(shift_rules)
+
+    assert_equal ['e', 'b', 'u', 'v'], result['b']
+    assert_equal ['o', 'l', 'd', 'e'], result['l']
+    assert_equal ['a', 'y', 'q', 'r'], result['y']
+  end
+
+  def test_actual_encryption
+    shift_rules = {
+      a: 3,
+      b: 27,
+      c: 73,
+      d: 20
+    }
+
+    assert_equal 'keder ohulw', @enigma.do_encrypt('hello world', shift_rules)
+    assert_equal 'dlxqclxy', @enigma.do_encrypt('alex lee', shift_rules)
+  end
 
   def test_parse_keys
     expected = {
