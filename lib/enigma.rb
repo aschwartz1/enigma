@@ -20,9 +20,12 @@ class Enigma
     encrypted_message = ''
     current_shift = 0
     message.chars.each do |char|
-      encrypted_message << encodings[char][which_shift]
+      require "pry"; binding.pry if encodings[char][current_shift].nil?
+      encrypted_message << encodings[char][current_shift]
       current_shift = next_shift(current_shift)
     end
+
+    encrypted_message
   end
 
   def calculate_encodings(shift_rules)
@@ -98,7 +101,7 @@ class Enigma
   end
 
   def next_shift(current_shift)
-    if current_shift < 4
+    if current_shift < 3
       current_shift + 1
     else
       0

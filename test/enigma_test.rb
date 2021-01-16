@@ -57,7 +57,6 @@ class EnigmaTest < Minitest::Test
   end
 
   def test_actual_encryption
-    skip
     shift_rules = {
       a: 3,
       b: 27,
