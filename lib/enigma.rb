@@ -9,9 +9,18 @@ class Enigma
     shift_rules = create_shifts(key, date)
 
     # Encrypt the message
-    do_encrypt(message, shift_rules)
+    encrypted = do_encrypt(message, shift_rules)
 
     # Format / return output hash
+    encryption_data(encrypted, key, date_string(date))
+  end
+
+  def encryption_data(encrypted_message, key, date)
+    {
+      encryption: encrypted_message,
+      key: key,
+      date: date
+    }
   end
 
   def do_encrypt(message, shift_rules)
@@ -74,10 +83,14 @@ class Enigma
   end
 
   def calculate_raw_offset(date)
-    date_as_number = date.strftime('%d%m%y').to_i
+    date_as_number = date_string(date).to_i
     squared_date_string = (date_as_number ** 2).to_s
 
     squared_date_string[-4..-1]
+  end
+
+  def date_string(date)
+    date.strftime('%d%m%y')
   end
 
   def encodings_for(orig_index, shift_rules)
