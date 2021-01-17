@@ -51,7 +51,7 @@ class Enigma
     encryption_data(encrypted, key, date_string(date))
   end
 
-    def do_encrypt(message, shift_rules)
+  def do_encrypt(message, shift_rules)
     encodings = calculate_encodings(shift_rules)
 
     shift_index = -1
@@ -73,6 +73,25 @@ class Enigma
   ### --- END ENCRYPT --- ###
 
   ### --- DECRYPT --- ###
+
+  def do_decrypt(encryption, shift_rules)
+    decodings = calculate_decodings(shift_rules)
+
+    shift_index = -1
+    encryption.chars.map do |char|
+      shift_index = next_after(shift_index)
+      decodings[char][shift_index]
+    end.join('')
+  end
+
+  def calculate_decodings(shift_rules)
+    decodings = {}
+    character_set.each_with_index do |char, index|
+      decodings[char] = decodings_for(index, shift_rules)
+    end
+
+    decodings
+  end
 
   ### --- END DECRYPT --- ###
 
@@ -130,6 +149,22 @@ class Enigma
   ### --- END ENCRYPT --- ###
 
   ### --- DECRYPT --- ###
+
+  def decodings_for(encoded_index, shift_rules)
+    decodings = []
+    shift_rules.keys.sort.each do |shift|
+      decodings << decoding_for(encoded_index, shift_rules[shift])
+    end
+
+    decodings
+  end
+
+  def decoding_for(encoded_index, shift)
+    num_characters = character_set.length
+    orig_index = (encoded_index - (shift % num_characters)) % num_characters
+
+    character_set[orig_index]
+  end
 
   ### --- END DECRYPT --- ###
 end

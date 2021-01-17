@@ -110,11 +110,26 @@ class EnigmaTest < Minitest::Test
   ### --- DECRYPT --- ###
 
   def test_can_decrypt_with_all_args
+    skip
+    expected = {
+      decryption: 'hello world',
+      key: '02715',
+      date: '040895'
+    }
 
+    assert_equal expected, @enigma.decrypt('keder ohulw', '02715', Date.new(1995, 8, 4))
   end
 
   def test_decrypts_message
+    shift_rules = {
+      a: 3,
+      b: 27,
+      c: 73,
+      d: 20
+    }
 
+    assert_equal 'hello world', @enigma.do_decrypt('keder ohulw', shift_rules)
+    assert_equal 'alex lee', @enigma.do_decrypt('dlxqclxy', shift_rules)
   end
 
   ### --- END DECRYPT --- ###
