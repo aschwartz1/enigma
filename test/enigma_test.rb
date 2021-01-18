@@ -107,45 +107,45 @@ class EnigmaTest < Minitest::Test
 
   ### --- DECRYPT --- ###
 
-  def test_can_decrypt_with_all_args
-    expected = {
-      decryption: 'hello world',
-      key: '02715',
-      date: '040895'
-    }
+  # def test_can_decrypt_with_all_args
+  #   expected = {
+  #     decryption: 'hello world',
+  #     key: '02715',
+  #     date: '040895'
+  #   }
 
-    assert_equal expected, @enigma.decrypt('keder ohulw', '02715', '040895')
-  end
+  #   assert_equal expected, @enigma.decrypt('keder ohulw', '02715', '040895')
+  # end
 
-  def test_can_decrypt_without_optional_args
-    # Note, this message & key decrypted w/ date of 1/18/21 returns 'hello world'
-    result = @enigma.decrypt('xsjednuhgzb', '66219')
+  # def test_can_decrypt_without_optional_args
+  #   # Note, this message & key decrypted w/ date of 1/18/21 returns 'hello world'
+  #   result = @enigma.decrypt('xsjednuhgzb', '66219')
 
-    assert_equal 3, result.size
-    assert_equal [:decryption, :key, :date], result.keys
-  end
+  #   assert_equal 3, result.size
+  #   assert_equal [:decryption, :key, :date], result.keys
+  # end
 
-  def test_decrypt_handles_unsupported_chars
-    expected = {
-      decryption: 'hello world!',
-      key: '02715',
-      date: '040895'
-    }
+  # def test_decrypt_handles_unsupported_chars
+  #   expected = {
+  #     decryption: 'hello world!',
+  #     key: '02715',
+  #     date: '040895'
+  #   }
 
-    assert_equal expected, @enigma.decrypt('keder ohulw!', '02715', '040895')
-  end
+  #   assert_equal expected, @enigma.decrypt('keder ohulw!', '02715', '040895')
+  # end
 
-  def test_decrypts_message
-    shift_rules = {
-      a: 3,
-      b: 27,
-      c: 73,
-      d: 20
-    }
+  # def test_decrypts_message
+  #   shift_rules = {
+  #     a: 3,
+  #     b: 27,
+  #     c: 73,
+  #     d: 20
+  #   }
 
-    assert_equal 'hello world', @enigma.do_decrypt('keder ohulw', shift_rules)
-    assert_equal 'alex lee', @enigma.do_decrypt('dlxqclxy', shift_rules)
-  end
+  #   assert_equal 'hello world', @enigma.do_decrypt('keder ohulw', shift_rules)
+  #   assert_equal 'alex lee', @enigma.do_decrypt('dlxqclxy', shift_rules)
+  # end
 
   ### --- END DECRYPT --- ###
 end
