@@ -1,10 +1,8 @@
 class Enigma
   SHIFT_KEYS = [:a, :b, :c, :d]
 
-  def create_shifts(key, date)
-    return nil unless key.length == 5
-
-    keys = parse_keys(key)
+  def create_shifts(raw_key, date)
+    keys = parse_keys(raw_key)
     offsets = parse_offsets(date)
 
     shifts = {}
@@ -15,10 +13,10 @@ class Enigma
     shifts
   end
 
-  def parse_keys(input_key)
+  def parse_keys(raw_key)
     keys = {}
     SHIFT_KEYS.each_with_index do |key, i|
-      keys[key] = input_key[i..i+1].to_i
+      keys[key] = raw_key[i..i+1].to_i
     end
 
     keys
@@ -37,9 +35,9 @@ class Enigma
 
   ### --- ENCRYPT --- ###
 
-  def encrypt(message, key, date)
+  def encrypt(message, key=nil, date=Time.now)
     # Need to generate a key?
-    # Need to generate a date?
+    key = generate_key unless key
 
     # Calculate shifts
     shift_rules = create_shifts(key, date)
@@ -74,7 +72,7 @@ class Enigma
 
   ### --- DECRYPT --- ###
 
-  def decrypt(message, key, date)
+  def decrypt(message, key, date=Time.now)
     # Calculate shifts
     shift_rules = create_shifts(key, date)
 
@@ -110,6 +108,10 @@ class Enigma
 
   def character_set
     @_character_set ||= (('a'..'z').to_a << ' ')
+  end
+
+  def generate_key
+    rand(0..99999).to_s.rjust(5, '0')
   end
 
   def calculate_raw_offset(date)
