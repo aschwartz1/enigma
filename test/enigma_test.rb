@@ -31,7 +31,7 @@ class EnigmaTest < Minitest::Test
       d: 5
     }
 
-    assert_equal expected, @enigma.parse_offsets(Date.new(1995, 8, 4))
+    assert_equal expected, @enigma.parse_offsets('040895')
   end
 
   def test_can_create_shifts
@@ -42,7 +42,7 @@ class EnigmaTest < Minitest::Test
       d: 20
     }
 
-    assert_equal expected, @enigma.create_shifts('02715', Date.new(1995, 8, 4))
+    assert_equal expected, @enigma.create_shifts('02715', '040895')
   end
 
   ### --- END ENIGMA -- ###
@@ -56,7 +56,7 @@ class EnigmaTest < Minitest::Test
       date: '040895'
     }
 
-    assert_equal expected, @enigma.encrypt('hello world', '02715', Date.new(1995, 8, 4))
+    assert_equal expected, @enigma.encrypt('hello world', '02715', '040895')
   end
 
   def test_can_encrypt_without_optional_args
@@ -119,7 +119,7 @@ class EnigmaTest < Minitest::Test
       date: '040895'
     }
 
-    assert_equal expected, @enigma.decrypt('keder ohulw', '02715', Date.new(1995, 8, 4))
+    assert_equal expected, @enigma.decrypt('keder ohulw', '02715', '040895')
   end
 
   def test_can_decrypt_without_optional_args
