@@ -39,6 +39,7 @@ class Enigma
     # Need to generate a key?
     key = generate_key unless key
     date_string = date_string_for(Time.now) unless date_string
+    message.downcase!
 
     # Calculate shifts
     shift_rules = create_shifts(key, date_string)
@@ -56,7 +57,7 @@ class Enigma
     shift_index = -1
     message.chars.map do |char|
       shift_index = next_after(shift_index)
-      encodings[char][shift_index]
+      encrypt_character(char, shift_index, encodings)
     end.join('')
   end
 
@@ -75,6 +76,7 @@ class Enigma
 
   def decrypt(message, key, date_string=nil)
     date_string = date_string_for(Time.now) unless date_string
+    message.downcase!
 
     # Calculate shifts
     shift_rules = create_shifts(key, date_string)
@@ -92,7 +94,7 @@ class Enigma
     shift_index = -1
     encryption.chars.map do |char|
       shift_index = next_after(shift_index)
-      decodings[char][shift_index]
+      decrypt_character(char, shift_index, decodings)
     end.join('')
   end
 
@@ -119,16 +121,18 @@ class Enigma
 
   def calculate_raw_offset(date_string)
     (date_string.to_i ** 2).to_s[-4..-1]
-
-    # TODO: delete if works
-    # date_as_number = date_string_for(date).to_i
-    # squared_date_string = (date_as_number ** 2).to_s
-
-    # squared_date_string[-4..-1]
   end
 
   def date_string_for(date)
     date.strftime('%d%m%y')
+  end
+
+  def next_after(last_shift)
+    if last_shift < 3
+      last_shift + 1
+    else
+      0
+    end
   end
 
   ### --- ENCRYPT --- ###
@@ -149,11 +153,11 @@ class Enigma
     character_set[new_index]
   end
 
-  def next_after(last_shift)
-    if last_shift < 3
-      last_shift + 1
+  def encrypt_character(char, shift_index, encodings)
+    if character_set.include?(char)
+      encodings[char][shift_index]
     else
-      0
+      char
     end
   end
 
@@ -185,6 +189,14 @@ class Enigma
     character_set[orig_index]
   end
 
+  def decrypt_character(char, shift_index, decodings)
+    if character_set.include?(char)
+      decodings[char][shift_index]
+    else
+      char
+    end
+  end
+
   def decryption_data(decrypted_message, key, date_string)
     {
       decryption: decrypted_message,
@@ -192,5 +204,6 @@ class Enigma
       date: date_string
     }
   end
+
   ### --- END DECRYPT --- ###
 end
