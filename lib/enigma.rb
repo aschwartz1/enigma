@@ -48,7 +48,7 @@ class Enigma
     encrypted = do_encrypt(message, shift_rules)
 
     # Format / return output hash
-    encryption_data(encrypted, key, date_string(date))
+    encryption_data(encrypted, key, date)
   end
 
   def do_encrypt(message, shift_rules)
@@ -73,6 +73,17 @@ class Enigma
   ### --- END ENCRYPT --- ###
 
   ### --- DECRYPT --- ###
+
+  def decrypt(message, key, date)
+    # Calculate shifts
+    shift_rules = create_shifts(key, date)
+
+    # Decrypt the message
+    decrypted = do_decrypt(message, shift_rules)
+
+    # Format / return output hash
+    decryption_data(decrypted, key, date)
+  end
 
   def do_decrypt(encryption, shift_rules)
     decodings = calculate_decodings(shift_rules)
@@ -142,7 +153,7 @@ class Enigma
     {
       encryption: encrypted_message,
       key: key,
-      date: date
+      date: date_string(date)
     }
   end
 
@@ -166,5 +177,12 @@ class Enigma
     character_set[orig_index]
   end
 
+  def decryption_data(decrypted_message, key, date)
+    {
+      decryption: decrypted_message,
+      key: key,
+      date: date_string(date)
+    }
+  end
   ### --- END DECRYPT --- ###
 end

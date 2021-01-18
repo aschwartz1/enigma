@@ -110,7 +110,6 @@ class EnigmaTest < Minitest::Test
   ### --- DECRYPT --- ###
 
   def test_can_decrypt_with_all_args
-    skip
     expected = {
       decryption: 'hello world',
       key: '02715',
