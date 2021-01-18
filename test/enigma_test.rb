@@ -66,20 +66,15 @@ class EnigmaTest < Minitest::Test
     assert_equal [:encryption, :key, :date], result.keys
   end
 
-  # TODO: once everything's done, I think
-  # def test_ecryption_ignores_chars
-  #   skip
-  #   key = '02715'
-  #   date = Date.new(1995, 8, 4)
+  def test_encrypt_handles_unsupported_chars
+    expected = {
+      encryption: 'keder ohulw',
+      key: '02715',
+      date: '040895'
+    }
 
-  #   expected = {
-  #     encryption: 'keder ohulw!',
-  #     key: key,
-  #     date: '04081995'
-  #   }
-
-  #   assert_equal expected, @enigma.encrypt('HELLO world!', key, date)
-  # end
+    assert_equal expected, @enigma.encrypt('HELLO WORLD', '02715', '040895')
+  end
 
   def test_create_encrypt_encodings
     shift_rules = {

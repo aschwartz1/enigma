@@ -39,6 +39,7 @@ class Enigma
     # Need to generate a key?
     key = generate_key unless key
     date_string = date_string_for(Time.now) unless date_string
+    message.downcase!
 
     # Calculate shifts
     shift_rules = create_shifts(key, date_string)
