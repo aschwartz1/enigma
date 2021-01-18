@@ -1,6 +1,5 @@
 require './lib/enigma'
 require './lib/file_helper'
-require 'time'
 
 # Parse command line arguments
 abort('Encryption must be ran with arguments `<original_file> <encrypted_file>`') if ARGV.length != 2
