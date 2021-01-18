@@ -59,9 +59,12 @@ class EnigmaTest < Minitest::Test
     assert_equal expected, @enigma.encrypt('hello world', '02715', Date.new(1995, 8, 4))
   end
 
-  # TODO: once encryption w/ args works
-  # def test_can_encrypt_without_optional_args
-  # end
+  def test_can_encrypt_without_optional_args
+    result = @enigma.encrypt('hello world')
+
+    assert_equal 3, result.size
+    assert_equal [:encryption, :key, :date], result.keys
+  end
 
   # TODO: once everything's done, I think
   # def test_ecryption_ignores_chars
@@ -117,6 +120,14 @@ class EnigmaTest < Minitest::Test
     }
 
     assert_equal expected, @enigma.decrypt('keder ohulw', '02715', Date.new(1995, 8, 4))
+  end
+
+  def test_can_decrypt_without_optional_args
+    # Note, this message & key decrypted w/ date of 1/18/21 returns 'hello world'
+    result = @enigma.decrypt('xsjednuhgzb', '66219')
+
+    assert_equal 3, result.size
+    assert_equal [:decryption, :key, :date], result.keys
   end
 
   def test_decrypts_message
