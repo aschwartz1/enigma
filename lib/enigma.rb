@@ -1,9 +1,9 @@
 class Enigma
   SHIFT_KEYS = [:a, :b, :c, :d]
 
-  def create_shifts(raw_key, date)
+  def create_shifts(raw_key, date_string)
     keys = parse_keys(raw_key)
-    offsets = parse_offsets(date)
+    offsets = parse_offsets(date_string)
 
     shifts = {}
     SHIFT_KEYS.each do |key|
@@ -22,8 +22,8 @@ class Enigma
     keys
   end
 
-  def parse_offsets(date)
-    raw_offset = calculate_raw_offset(date)
+  def parse_offsets(date_string)
+    raw_offset = calculate_raw_offset(date_string)
 
     offsets = {}
     SHIFT_KEYS.each_with_index do |key, i|
@@ -35,18 +35,19 @@ class Enigma
 
   ### --- ENCRYPT --- ###
 
-  def encrypt(message, key=nil, date=Time.now)
+  def encrypt(message, key=nil, date_string=nil)
     # Need to generate a key?
     key = generate_key unless key
+    date_string = date_string_for(Time.now) unless date_string
 
     # Calculate shifts
-    shift_rules = create_shifts(key, date)
+    shift_rules = create_shifts(key, date_string)
 
     # Encrypt the message
     encrypted = do_encrypt(message, shift_rules)
 
     # Format / return output hash
-    encryption_data(encrypted, key, date)
+    encryption_data(encrypted, key, date_string)
   end
 
   def do_encrypt(message, shift_rules)
@@ -72,15 +73,17 @@ class Enigma
 
   ### --- DECRYPT --- ###
 
-  def decrypt(message, key, date=Time.now)
+  def decrypt(message, key, date_string=nil)
+    date_string = date_string_for(Time.now) unless date_string
+
     # Calculate shifts
-    shift_rules = create_shifts(key, date)
+    shift_rules = create_shifts(key, date_string)
 
     # Decrypt the message
     decrypted = do_decrypt(message, shift_rules)
 
     # Format / return output hash
-    decryption_data(decrypted, key, date)
+    decryption_data(decrypted, key, date_string)
   end
 
   def do_decrypt(encryption, shift_rules)
@@ -114,14 +117,17 @@ class Enigma
     rand(0..99999).to_s.rjust(5, '0')
   end
 
-  def calculate_raw_offset(date)
-    date_as_number = date_string(date).to_i
-    squared_date_string = (date_as_number ** 2).to_s
+  def calculate_raw_offset(date_string)
+    (date_string.to_i ** 2).to_s[-4..-1]
 
-    squared_date_string[-4..-1]
+    # TODO: delete if works
+    # date_as_number = date_string_for(date).to_i
+    # squared_date_string = (date_as_number ** 2).to_s
+
+    # squared_date_string[-4..-1]
   end
 
-  def date_string(date)
+  def date_string_for(date)
     date.strftime('%d%m%y')
   end
 
@@ -151,11 +157,11 @@ class Enigma
     end
   end
 
-  def encryption_data(encrypted_message, key, date)
+  def encryption_data(encrypted_message, key, date_string)
     {
       encryption: encrypted_message,
       key: key,
-      date: date_string(date)
+      date: date_string
     }
   end
 
@@ -179,11 +185,11 @@ class Enigma
     character_set[orig_index]
   end
 
-  def decryption_data(decrypted_message, key, date)
+  def decryption_data(decrypted_message, key, date_string)
     {
       decryption: decrypted_message,
       key: key,
-      date: date_string(date)
+      date: date_string
     }
   end
   ### --- END DECRYPT --- ###
