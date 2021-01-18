@@ -17,7 +17,7 @@ message = file_helper.read(original_file)
 enigma = Enigma.new
 
 # Encrypt message
-encryption_data = enigma.encrypt(message, '02715', '040895')
+encryption_data = enigma.encrypt(message)
 
 # Write message to output file
 file_helper.write(encryption_data[:encryption], encrypted_file)

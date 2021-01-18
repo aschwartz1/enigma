@@ -13,13 +13,13 @@ file_helper = FileHelper.new
 abort("#{encrypted_file} doesn't exist.") unless file_helper.file_exists?(encrypted_file)
 
 # Read in the message from it
-message = file_helper.read(encrypted_file)
+encryption = file_helper.read(encrypted_file)
 
 # Spin up an Enigma instance
 enigma = Enigma.new
 
 # Decrypt message
-decryption_data = enigma.decrypt(message, key, date)
+decryption_data = enigma.decrypt(encryption, key, date)
 
 # Write message to output file
 file_helper.write(decryption_data[:decryption], decrypted_file)
