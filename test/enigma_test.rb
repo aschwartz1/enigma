@@ -49,59 +49,59 @@ class EnigmaTest < Minitest::Test
 
   ### --- ENCRYPT --- ###
 
-  def test_can_encrypt_with_all_args
-    expected = {
-      encryption: 'keder ohulw',
-      key: '02715',
-      date: '040895'
-    }
+  # def test_can_encrypt_with_all_args
+  #   expected = {
+  #     encryption: 'keder ohulw',
+  #     key: '02715',
+  #     date: '040895'
+  #   }
 
-    assert_equal expected, @enigma.encrypt('hello world', '02715', '040895')
-  end
+  #   assert_equal expected, @enigma.encrypt('hello world', '02715', '040895')
+  # end
 
-  def test_can_encrypt_without_optional_args
-    result = @enigma.encrypt('hello world')
+  # def test_can_encrypt_without_optional_args
+  #   result = @enigma.encrypt('hello world')
 
-    assert_equal 3, result.size
-    assert_equal [:encryption, :key, :date], result.keys
-  end
+  #   assert_equal 3, result.size
+  #   assert_equal [:encryption, :key, :date], result.keys
+  # end
 
-  def test_encrypt_handles_unsupported_chars
-    expected = {
-      encryption: 'keder ohulw!',
-      key: '02715',
-      date: '040895'
-    }
+  # def test_encrypt_handles_unsupported_chars
+  #   expected = {
+  #     encryption: 'keder ohulw!',
+  #     key: '02715',
+  #     date: '040895'
+  #   }
 
-    assert_equal expected, @enigma.encrypt('HELLO WORLD!', '02715', '040895')
-  end
+  #   assert_equal expected, @enigma.encrypt('HELLO WORLD!', '02715', '040895')
+  # end
 
-  def test_create_encrypt_encodings
-    shift_rules = {
-      a: 3,
-      b: 27,
-      c: 73,
-      d: 20
-    }
+  # def test_create_encrypt_encodings
+  #   shift_rules = {
+  #     a: 3,
+  #     b: 27,
+  #     c: 73,
+  #     d: 20
+  #   }
 
-    result = @enigma.calculate_encodings(shift_rules)
+  #   result = @enigma.calculate_encodings(shift_rules)
 
-    assert_equal ['e', 'b', 'u', 'v'], result['b']
-    assert_equal ['o', 'l', 'd', 'e'], result['l']
-    assert_equal ['a', 'y', 'q', 'r'], result['y']
-  end
+  #   assert_equal ['e', 'b', 'u', 'v'], result['b']
+  #   assert_equal ['o', 'l', 'd', 'e'], result['l']
+  #   assert_equal ['a', 'y', 'q', 'r'], result['y']
+  # end
 
-  def test_encrypts_message
-    shift_rules = {
-      a: 3,
-      b: 27,
-      c: 73,
-      d: 20
-    }
+  # def test_encrypts_message
+  #   shift_rules = {
+  #     a: 3,
+  #     b: 27,
+  #     c: 73,
+  #     d: 20
+  #   }
 
-    assert_equal 'keder ohulw', @enigma.do_encrypt('hello world', shift_rules)
-    assert_equal 'dlxqclxy', @enigma.do_encrypt('alex lee', shift_rules)
-  end
+  #   assert_equal 'keder ohulw', @enigma.do_encrypt('hello world', shift_rules)
+  #   assert_equal 'dlxqclxy', @enigma.do_encrypt('alex lee', shift_rules)
+  # end
 
   ### --- END ENCRYPT --- ###
 
