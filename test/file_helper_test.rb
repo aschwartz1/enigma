@@ -19,4 +19,17 @@ class FileHelperTest < Minitest::Test
 
     assert_equal 'hello world', message
   end
+
+  def test_can_write_file
+    message_to_write = 'The quick brown fox jumps over the lazy dog'
+
+    begin
+      @helper.write(message_to_write, 'tmp.txt')
+      message_read_back_in = @helper.read('tmp.txt')
+
+      assert_equal message_to_write, message_read_back_in
+    ensure
+      File.delete('tmp.txt') if File.exist? 'tmp.txt'
+    end
+  end
 end

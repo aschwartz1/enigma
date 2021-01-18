@@ -1,8 +1,22 @@
 class FileHelper
   def read(filepath)
-    file = File.open(filepath, 'r')
+    begin
+      file = File.open(filepath, 'r')
+      data = file.read.chomp
+    ensure
+      file.close
+    end
 
-    file.read.chomp
+    data
+  end
+
+  def write(contents, filepath)
+    begin
+      file = File.open(filepath, 'w')
+      file.write(contents)
+    ensure
+      file.close
+    end
   end
 
   def file_exists?(filepath)
