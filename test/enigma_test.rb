@@ -68,12 +68,12 @@ class EnigmaTest < Minitest::Test
 
   def test_encrypt_handles_unsupported_chars
     expected = {
-      encryption: 'keder ohulw',
+      encryption: 'keder ohulw!',
       key: '02715',
       date: '040895'
     }
 
-    assert_equal expected, @enigma.encrypt('HELLO WORLD', '02715', '040895')
+    assert_equal expected, @enigma.encrypt('HELLO WORLD!', '02715', '040895')
   end
 
   def test_create_encrypt_encodings
@@ -123,6 +123,16 @@ class EnigmaTest < Minitest::Test
 
     assert_equal 3, result.size
     assert_equal [:decryption, :key, :date], result.keys
+  end
+
+  def test_decrypt_handles_unsupported_chars
+    expected = {
+      decryption: 'hello world!',
+      key: '02715',
+      date: '040895'
+    }
+
+    assert_equal expected, @enigma.decrypt('keder ohulw!', '02715', '040895')
   end
 
   def test_decrypts_message
