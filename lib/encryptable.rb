@@ -34,6 +34,40 @@ module Encryptable
     encodings
   end
 
+  # :nocov:
+  def create_shifts(raw_key, date_string)
+    raise NotImplementedError
+  end
+
+  def parse_keys(raw_key)
+    raise NotImplementedError
+  end
+
+  def parse_offsets(date_string)
+    raise NotImplementedError
+  end
+
+  def character_set
+    raise NotImplementedError
+  end
+
+  def generate_key
+    raise NotImplementedError
+  end
+
+  def calculate_raw_offset(date_string)
+    raise NotImplementedError
+  end
+
+  def date_string_for(date)
+    raise NotImplementedError
+  end
+
+  def next_after(last_shift)
+    raise NotImplementedError
+  end
+  # :nocov:
+
   private
 
   def encodings_for(orig_index, shift_rules)
