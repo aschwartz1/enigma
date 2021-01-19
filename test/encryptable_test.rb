@@ -120,4 +120,17 @@ class EncryptableTest < Minitest::Test
     assert_equal 'keder ohulw', @enigma.do_encrypt('hello world', shift_rules)
     assert_equal 'dlxqclxy', @enigma.do_encrypt('alex lee', shift_rules)
   end
+
+  # def test_assumed_containing_class_methods
+  #   assert_raises NotImplementedError do
+  #     @enigma.create_shifts(nil, nil)
+  #     @enigma.parse_keys(nil)
+  #     @enigma.parse_offsets(nil)
+  #     @enigma.character_set
+  #     @enigma.generate_key
+  #     @enigma.calculate_raw_offset(nil)
+  #     @enigma.date_string_for(nil)
+  #     @enigma.next_after(nil)
+  #   end
+  # end
 end
